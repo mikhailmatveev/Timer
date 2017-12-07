@@ -1,8 +1,13 @@
 'use strict';
 
 function Timer() {
-    var TIMER_STATES = ['NONE', 'START', 'STOP', 'RESET'],
-        state = TIMER_STATES[0],
+    const TIMER_STATES = {
+        NONE: 0,
+        START: 1,
+        STOP: 2,
+        RESET: 3
+    };
+    var state = TIMER_STATES.NONE,
         dt = 0,
         start,
         now,
@@ -17,20 +22,20 @@ function Timer() {
     };
 
     function reset() {
-        if (state !== TIMER_STATES[3]) {
-            state = TIMER_STATES[3];
+        if (state !== TIMER_STATES.RESET) {
+            state = TIMER_STATES.RESET;
             dt = 0;
         }
     };
 
     function start() {
-        if (state !== TIMER_STATES[1]) {
-            state = TIMER_STATES[1];
+        if (state !== TIMER_STATES.START) {
+            state = TIMER_STATES.START;
             now = t();
             if (!intervalId) {
                 start = now - dt;
                 intervalId = setInterval(function() {
-                    if (state === TIMER_STATES[1]) { // state === 'START'
+                    if (state === TIMER_STATES.START) { // state === 'START'
                         now = t();
                     } else {
                         clearInterval(intervalId);
@@ -42,8 +47,8 @@ function Timer() {
     };
 
     function stop() {
-        if (state === TIMER_STATES[1]) {
-            state = TIMER_STATES[2];
+        if (state === TIMER_STATES.START) {
+            state = TIMER_STATES.STOP;
             dt = now - start;
         }
     };
